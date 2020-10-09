@@ -1,0 +1,31 @@
+
+
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %} Results {% endblock %}
+{% block link-css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block nav-bar %}
+    <ul>
+        <li>Recent Results</li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <table>
+        <tr>
+            <th>Candidate</th>
+            <th>Quiz</th>
+            <th>Score (%)</th>
+        </tr>
+        {% for assessment in assessments %}
+            <tr>
+                <td>{{ assessment.candidate_name }}</td>
+                <td>{{ assessment.quiz }}</td>
+                <td>{{ assessment.score }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
