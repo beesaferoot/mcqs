@@ -3,7 +3,7 @@
 ##  Dependencies
 Django 3.1.1
 
-##Setup
+## Setup
    - install virtualenv to isolate your development environment `sudo apt-get install virtualenv`
    - create a virtual env to run the app `virtualenv env --python=python3`
    - activate virtual env `source env/bin/activate`
@@ -16,7 +16,7 @@ Django 3.1.1
    - Serve the project locally 
     `python manage.py runserver`
 
-##Preview
+## Preview
 - access served app via your browser on http://localhost:8000 
 
 Cheers!!!
