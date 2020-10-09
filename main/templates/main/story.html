@@ -1,0 +1,43 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %} Story {% endblock %}
+{% block link-css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block nav-bar %}
+    <ul>
+        <li>Story</li>
+        <li id='candidate-text'></li>
+    </ul>
+{% endblock %}
+{% block content %}
+    <div id="main">
+        <div id="story-description" style="display: none;">
+        </div>
+        <ul>
+            {% for story in stories %}
+                <li onclick="dispatch_story(this)" id="{{ story.id }}" data-description="{{ story.description }}">
+                    {{story.title | truncatewords:"100"}}
+                </li>
+            {% endfor %}
+        </ul>
+        
+    </div>
+    <script>
+       
+        window.onload = (e) => {
+            let param = new URLSearchParams(document.location.search);
+            let linkEl = document.querySelector("#candidate-text");
+            linkEl.innerHTML = `Hello ${param.get('candidate-name')}`;
+        };
+        function dispatch_story(e){
+            let name = new URLSearchParams(document.location.search).get("candidate-name");
+            let divEl = document.querySelector("#story-description");
+            divEl.innerHTML = `${e.dataset.description}<br/><br/>
+                            <a id="start-quiz-btn" href="/assessment/instruction/quiz/${e.id}/?candidate-name=${name}">
+                            start assessment</a>`;
+            divEl.style.display = "block";
+        }
+    </script>
+{% endblock %}

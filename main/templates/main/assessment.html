@@ -1,0 +1,127 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %} Home {% endblock %}
+{% block link-css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block nav-bar %}
+    <ul>
+        <li><a href="/">Home </a>|</li>
+        <li><a href="/dashboard">DashBoard </a>|</li>
+        <li>Assessment</li>
+    </ul>
+{% endblock %}
+{% block content %}
+    <div id='assessment'>
+        <div id="timer" >Timer: <time id="time-left" data-duration='{{assessment.quiz.time_frame }}' datetime="{{ assessment.start_time}}">{{ assessment.quiz.time_frame}}</time></div>
+        <div id="quiz-info">
+            <h5>Quiz Title</h5>
+            {{ assessment.quiz.title }}
+            <br><br>
+        </div>
+
+        <div id="quiz-questions">
+            <form id="{{ assessment.id}}"data-url="/assessment/quiz/{{assessment.quiz.id}}/" method="post">
+            {% csrf_token %}
+            {% for question in assessment.quiz.question_set.all %}
+                <fieldset id="{{question.id}}">
+                    <div>{{ question.question }}</div>
+                    {% for option in question.choice_set.all %}
+                        <input type="radio" name="{{question.question}}" id="{{option.id}}"
+                        value="{{ option.content }}"/>   
+                        <label for="{{ option.content }}">{{ option.content }}</label><br>                        
+                    {% endfor %}
+                    
+                </fieldset>
+                <br>
+            {% endfor %}
+                <div><button class="a-btn"   type="submit">Submit</button></div>
+            </form>
+        </div>
+       <script>
+
+           window.onload = function(event){
+               parseTime();
+               endOnTimeExceeded();
+               var form = document.querySelector("form");
+               form.addEventListener("submit", function(event) {
+                    event.preventDefault();
+                    const data = new FormData(form);
+                    const name = new URLSearchParams(document.location.search).get("candidate-name");
+                    data.set("assessment", {{ assessment.id }});
+                    postData(data, form.dataset.url);
+                }, false);
+            }
+
+           function postData(data, url){
+                console.log(url);
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", url, true);
+                     
+                //Send the proper header information along with the request
+                // xhr.setRequestHeader("Content-Type", "multipart/form-data");
+                xhr.setRequestHeader("X-CSRFToken", data.get("csrfmiddlewaretoken"));
+                xhr.onreadystatechange = function() { // Call a function when the state changes.
+                    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                        console.log(this.responseText);
+                        window.location.href = "/assessments/results";
+                    }
+                }
+                xhr.send(data);
+           }
+
+           function endOnTimeExceeded(){
+               const startTime = Date.now();
+               setInterval(() => {
+                    const elaspedTime = Date.now() - startTime;
+                    if(elaspedTime >= (Number('{{assessment.quiz.time_frame.seconds}}') * 1000)){
+                         const btn = document.querySelector("button");
+                         btn.click();
+                    }
+                    console.log(startTime);
+                    console.log('elasped time = ', elaspedTime);
+                    console.log('test time frame = ', Number('{{assessment.quiz.time_frame.seconds}}') * 1000);
+               }, 1000);
+           }
+           
+           function parseTime(){
+                let timeEl = document.querySelector("#time-left");
+                let timeArr = timeEl.dataset.duration.split(":");
+                window.elaspedTime = timeArr;
+                let intervalID = setInterval(() => {
+                    window.elaspedTime = decTime(window.elaspedTime);
+                        if(window.elaspedTime){
+                        timeEl.innerText = `${window.elaspedTime[0]}:${window.elaspedTime[1]}:${window.elaspedTime[2]}`;
+                    }else{
+                        timeEl.innerText = "stopage time";
+                        clearInterval(intervalID);
+                    }
+                }, 1000);              
+           }
+
+           function decTime(arr){
+                let hr = parseInt(arr[0]);
+                let min = parseInt(arr[1]);
+                let sec = parseInt(arr[2]);
+                if (sec - 1 < 0){
+                    if(min - 1 < 0){
+                        if(hr - 1 < 0){
+                            return null
+                        }else{
+                            hr -= 1;
+                            min = 59;
+                            sec = 59;
+                        }
+                    }else{
+                        min -= 1;
+                        sec = 59;
+                    }
+                }else{
+                    sec -= 1;
+                }
+                return [hr, min, sec]
+           }
+       </script>
+    </div>
+{% endblock %}

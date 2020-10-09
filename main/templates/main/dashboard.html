@@ -1,0 +1,34 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %} DashBoard {% endblock %}
+{% block link-css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+{% endblock %}
+{% block nav-bar %}
+    <ul>
+        <li><a href="/">Home</a> |</li>
+        <li>DashBoard</li>
+    </ul>
+{% endblock %}
+{% block content %}
+    <div id="dashboard">
+        <h3>Quizes</h3>
+        {%  for quiz in quizes %}
+            <div class='card' id={{quiz.id}} ><a  href="/dashboard/edit_quiz/{{quiz.id}}/">{{ quiz.title}}</a></div>
+        {% endfor %}
+        <a class="a-btn" id="create-quiz-btn" href="/dashboard/create_quiz">Create new quiz</a>
+        <div id="assessments">
+            <h3>Assessment Questions</h3>
+            {% for quiz in quizes %}
+                {% for question in quiz.question_set.all %}
+                    <div class="card">
+                        <a  id="add-choices-btn" href="/dashboard/add_question_choices/{{question.id}}/">
+                            {{ question.question }}        
+                        </a>
+                    </div>
+                {% endfor %}
+                
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

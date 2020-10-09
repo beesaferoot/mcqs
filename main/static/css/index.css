@@ -1,0 +1,130 @@
+html, body {
+	font-family: Verdana,sans-serif;
+	font-size: 15px;
+	line-height: 1.5;
+}
+
+.errorlist li {
+    list-style-type: none;
+    color: red;
+}
+nav ul{
+    list-style-type: none;
+    border: 1px solid #e7e7e7;
+    background-color: #f3f3f3;
+    padding: 14px 16px;
+}
+
+nav>ul>li {
+    display: inline;
+}
+
+input{
+    border: 1px solid #e7e7e7;
+}
+
+#main ul>li{
+    list-style: circle;
+    background-color: #f3f3f3;
+    width: max-content;
+    margin-bottom: 20px;
+}
+
+#main ul>li:hover {
+    background-color: gray;
+    color: white;
+}
+
+#candidate-text{
+    margin-left: 80%;
+}
+
+#story-description {
+    border: 1px solid #e7e7e7;
+    background-color: #f3f3f3;
+    width: 300px;
+    float: inline-end;
+    padding: 5px 5px;
+    margin-right: 40%;
+}
+
+
+a {
+    text-decoration: none;
+}
+
+#start-quiz-btn, #create-quiz-btn, .a-btn{
+    color: white;
+    border: none;
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 2px 2px;
+}
+#start-quiz-btn, #start-quiz-btn:active, #start-quiz-btn:focus,#create-quiz-btn, .a-btn{
+    box-shadow: none;
+    background-color: #46a049 !important;
+}
+
+#create-quiz-btn{
+    padding: 8px 8px;
+    margin-top: 20px;
+}
+
+.card {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    max-width: 300px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.card span {
+    margin-top: 50%;
+    margin-bottom: 50%;
+}
+
+  
+/* On mouse-over, add a deeper shadow */
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+#timer {
+    float: inline-end;
+    margin-right: 20%;
+}
+@media all and (min-width: 480px) {
+    form {
+        padding: 60px 0;
+        margin: 0 auto;
+        max-width: 320px;
+    }
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #F1F1F1;
+    text-align: center;
+    padding: 10px;
+ }
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  margin: auto;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
